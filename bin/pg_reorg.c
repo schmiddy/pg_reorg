@@ -428,6 +428,8 @@ reorg_one_table(const reorg_table *table, const char *orderby)
 			 errmsg("trigger %s conflicted for %s",
 					PQgetvalue(res, 0, 0), table->target_name)));
 
+	PQclear(res);
+
 	command(table->create_pktype, 0, NULL);
 	command(table->create_log, 0, NULL);
 	command(table->create_trigger, 0, NULL);
@@ -438,7 +440,7 @@ reorg_one_table(const reorg_table *table, const char *orderby)
 	/*
 	 * Register the table to be dropped on error. We use pktype as
 	 * an advisory lock. The registration should be done after
-	 * the first command is succeeded.
+	 * the first command succeeds.
 	 */
 	pgut_atexit_push(&reorg_cleanup, (void *) table);
 
@@ -495,8 +497,8 @@ reorg_one_table(const reorg_table *table, const char *orderby)
 	PQclear(res);
 
 	/*
-	 * 4. Apply log to temp table until no tuples left in the log
-	 * and all of old transactions are finished.
+	 * 4. Apply log to temp table until no tuples are left in the log
+	 * and all of the old transactions are finished.
 	 */
 	for (;;)
 	{
@@ -516,7 +518,7 @@ reorg_one_table(const reorg_table *table, const char *orderby)
 			continue;	/* wait for old transactions */
 		}
 
-		/* ok, go next step. */
+		/* ok, go to next step. */
 		break;
 	}
 
