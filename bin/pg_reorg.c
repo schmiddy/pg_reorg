@@ -234,7 +234,7 @@ reorg_one_database(const char *orderby, const char *table)
 	int				i;
 	int				num;
 	StringInfoData	sql;
-	char		*table_escaped;
+	const char	*table_escaped;
 
 	initStringInfo(&sql);
 
@@ -258,7 +258,7 @@ reorg_one_database(const char *orderby, const char *table)
 
 		appendStringInfoString(&sql, "relid = $1::regclass");
 		res = execute_elevel(sql.data, 1, &table_escaped, DEBUG2);
-		PQfreemem(table_escaped);
+		PQfreemem((char *) table_escaped);
 	}
 	else
 	{
