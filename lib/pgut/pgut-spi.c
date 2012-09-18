@@ -14,7 +14,7 @@
 	(((expected) > 0 && (ret) != (expected)) || (ret) < 0)
 
 static void
-appendStringInfoVA_s(StringInfo str, const char *fmt, va_list args) __attribute__((format (PG_PRINTF_ATTRIBUTE, 2, 0)));
+appendStringInfoVA_s(StringInfo str, const char *fmt, va_list args) __attribute__((format (printf, 2, 0)));
 
 static void
 termStringInfo(StringInfo str)

@@ -98,7 +98,7 @@ extern bool pgut_mkdir(const char *path);
 	(pgut_errstart(elevel) ? (pgut_errfinish rest) : (void) 0)
 
 extern void elog(int elevel, const char *fmt, ...)
-__attribute__((format(PG_PRINTF_ATTRIBUTE, 2, 3)));
+__attribute__((format(printf, 2, 3)));
 extern const char *format_elevel(int elevel);
 extern int parse_elevel(const char *value);
 extern int errcode_errno(void);
@@ -149,7 +149,7 @@ extern void CHECK_FOR_INTERRUPTS(void);
 #define appendStringInfoChar	appendPQExpBufferChar
 #define appendBinaryStringInfo	appendBinaryPQExpBuffer
 
-extern bool appendStringInfoVA(StringInfo str, const char *fmt, va_list args) __attribute__((format (PG_PRINTF_ATTRIBUTE, 2, 0)));
+extern bool appendStringInfoVA(StringInfo str, const char *fmt, va_list args) __attribute__((format (printf, 2, 0)));
 extern int appendStringInfoFile(StringInfo str, FILE *fp);
 extern int appendStringInfoFd(StringInfo str, int fd);
 
