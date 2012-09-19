@@ -234,7 +234,6 @@ reorg_one_database(const char *orderby, const char *table)
 	int				i;
 	int				num;
 	StringInfoData	sql;
-	const char	*table_escaped;
 
 	initStringInfo(&sql);
 
@@ -253,12 +252,8 @@ reorg_one_database(const char *orderby, const char *table)
 	appendStringInfoString(&sql, "SELECT * FROM reorg.tables WHERE ");
 	if (table)
 	{
-		if (!(table_escaped = PQescapeIdentifier(connection, table, strlen(table))))
-			elog(ERROR, "Unable to escape table %s: %s", table, PQerrorMessage(connection));
-
-		appendStringInfoString(&sql, "relid = $1::regclass");
-		res = execute_elevel(sql.data, 1, &table_escaped, DEBUG2);
-		PQfreemem((char *) table_escaped);
+		appendStringInfo(&sql, "relid = quote_ident($1)::regclass::oid");
+		res = execute_elevel(sql.data, 1, &table, DEBUG2);
 	}
 	else
 	{
