@@ -236,7 +236,7 @@ reorg_one_database(const char *orderby, const char *table)
 	appendStringInfoString(&sql, "SELECT * FROM reorg.tables WHERE ");
 	if (table)
 	{
-		appendStringInfo(&sql, "relid = quote_ident($1)::regclass::oid");
+		appendStringInfo(&sql, "relid = $1::regclass::oid");
 		res = execute_elevel(sql.data, 1, &table, DEBUG2);
 	}
 	else
